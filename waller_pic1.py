@@ -1,15 +1,15 @@
 
 import random
-from urllib import response
 import requests
 from bs4 import BeautifulSoup
 import time
+import os
 
 config = {
     "fenlei":"dongman",
     "px":"1920x1080",
     "path":"/home/bye/Pictures/waller_pic/www.netbian.com/",
-    "startPage":16,
+    "startPage":31,
     "endPage":100
 }
 
@@ -32,24 +32,24 @@ head = {
     "Accept-Encoding": 'gzip, deflate',
     "Accept-Language": 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
     # "Cache-Control": 'max-age=0',
-    "Connection": 'keep-alive',
+    "Connection": 'close',
     "Cookie": '__yjs_duid=1_1ded8ba9b536c5b42796529239319dd21635240082530; Hm_lvt_14b14198b6e26157b7eba06b390ab763=1635240084,1635302667; xygkqecookieclassrecord=%2C7%2C; Hm_lpvt_14b14198b6e26157b7eba06b390ab763=1635303536',
     "Host": 'www.netbian.com',
     "Referer": 'http://www.netbian.com/1920x1080/',
     "Upgrade-Insecure-Requests": '1',
 }
-head1 = {
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
-    "Accept": 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-    "Accept-Encoding": 'gzip, deflate',
-    "Accept-Language": 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
-    # "Cache-Control": 'max-age=0',
-    "Connection": 'keep-alive',
-    "Cookie": '__yjs_duid=1_1ded8ba9b536c5b42796529239319dd21635240082530; Hm_lvt_14b14198b6e26157b7eba06b390ab763=1635240084,1635302667; xygkqecookieclassrecord=%2C7%2C; Hm_lpvt_14b14198b6e26157b7eba06b390ab763=1635303536',
-    "Host": 'www.netbian.com',
-    "Referer": 'http://www.netbian.com/%s/' % "desk",
-    "Upgrade-Insecure-Requests": '1',
-}
+# head1 = {
+#     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
+#     "Accept": 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+#     "Accept-Encoding": 'gzip, deflate',
+#     "Accept-Language": 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+#     # "Cache-Control": 'max-age=0',
+#     "Connection": 'keep-alive',
+#     "Cookie": '__yjs_duid=1_1ded8ba9b536c5b42796529239319dd21635240082530; Hm_lvt_14b14198b6e26157b7eba06b390ab763=1635240084,1635302667; xygkqecookieclassrecord=%2C7%2C; Hm_lpvt_14b14198b6e26157b7eba06b390ab763=1635303536',
+#     "Host": 'www.netbian.com',
+#     "Referer": 'http://www.netbian.com/%s/' % "desk",
+#     "Upgrade-Insecure-Requests": '1',
+# }
 # 下载图片
 def download_img(img_url,desc):
     ua = random.choice(uas)
@@ -61,6 +61,8 @@ def download_img(img_url,desc):
         # img_name = img_url.split('/').pop()[-12:]  # 截取图片文件名
         img_name = desc  # 截取图片文件名
 
+        if not os.path.exists(path):
+            os.makedirs(path)
         # print(img_name)
         with open(path + img_name, 'wb') as f:
             f.write(r.content)
@@ -69,7 +71,6 @@ def download_img(img_url,desc):
 
 
 def getImgUrl1(url):
-    time.sleep(2)
     response = requests.get(url, headers=head,timeout=(5,10)) 
     content = response.content
     soup = BeautifulSoup(content, "lxml")
@@ -113,8 +114,9 @@ if __name__ == '__main__':
         imgUrl1 = 'http://www.netbian.com/%s/index_%s.htm' % (config["px"],str(i))
         try:
             urls= getImgUrl1(imgUrl1)
+            time.sleep(random.randint(1,3))
             for j in urls:
-                time.sleep(1)
+                time.sleep(random.randint(1,3))
                 # print("imgUrl",j)
                 url2="http://www.netbian.com/"+j+"-"+config["px"]+".htm"
                 try:
