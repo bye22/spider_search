@@ -1,0 +1,8 @@
+redis>2.10.3
+Flask>2.0.1
+requests>2.10.0
+itsdangerous>2.0.1
+pymysql
+pymysql-pool
+pandas
+pymysql-dao
